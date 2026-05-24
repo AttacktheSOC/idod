@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Template for AYR technical blog posts with structured content, detection snippets, and urgent operational tips." />
+    <meta name="keywords" content="blog template, sigma, yara, kql, opsec" />
+    <title>Attack Your Rights | Blog Post Template</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+      <div class="container">
+        <a class="logo" href="index.html" aria-label="Attack Your Rights home">Attack Your Rights</a>
+        <nav aria-label="Primary navigation">
+          <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="resources.html">Tools &amp; Resources</a></li>
+            <li><a href="blog.html" aria-current="page">Blog</a></li>
+            <li><a href="contact.html">Contact &amp; Submissions</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="container">
+      <article aria-labelledby="post-title">
+        <h1 id="post-title">[Template] Threat Campaign to Detection Rules</h1>
+        <p class="meta"><time datetime="2026-05-24">24 May 2026</time> · 12 min read · <span class="tag">Template</span></p>
+
+        <h2>Executive summary</h2>
+        <p>Provide a plain-language overview of the threat, who is targeted, and what practical actions defenders can take immediately.</p>
+
+        <blockquote>
+          <p><strong>Urgent OpSec Note:</strong> If compromise is suspected, prioritize account containment and secondary-channel verification before public communication.</p>
+        </blockquote>
+
+        <h2>Threat model and assumptions</h2>
+        <h3>Likely adversary goals</h3>
+        <p>Document likely collection objectives, persistence mechanisms, and abuse pathways tied to affected communities.</p>
+
+        <h3>Detection opportunities</h3>
+        <p>Include assumptions and environment-specific caveats. Mark any required telemetry sources and expected blind spots.</p>
+
+        <h2>Defensive snippets</h2>
+        <p>Use inline code for key fields like <code>process.command_line</code> and <code>file.hash.sha256</code>.</p>
+
+        <h3>Sigma sample</h3>
+        <pre><code>title: Suspicious Archive Execution Chain
+id: 4bf7f097-1e0b-4c2d-ae3a-f4689c672eef
+status: experimental
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith: '\\explorer.exe'
+    Image|endswith:
+      - '\\wscript.exe'
+      - '\\powershell.exe'
+  condition: selection
+level: medium</code></pre>
+
+        <h3>KQL sample</h3>
+        <pre><code>DeviceProcessEvents
+| where Timestamp &gt; ago(7d)
+| where InitiatingProcessFileName =~ "explorer.exe"
+| where FileName in~ ("wscript.exe", "powershell.exe")
+| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine</code></pre>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Attack Your Rights (AYR) · Share practical defenses, responsibly.</p>
+      </div>
+    </footer>
+  </body>
+</html>
