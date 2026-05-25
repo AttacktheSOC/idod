@@ -1,6 +1,7 @@
 module.exports = function (eleventyConfig) {
   // Pass assets directory through unaltered
   eleventyConfig.addPassthroughCopy("src/assets");
+  eleventyConfig.addPassthroughCopy("src/CNAME");
 
   // Reverse-sorted posts collection (newest first)
   eleventyConfig.addCollection("posts", function (collectionApi) {
@@ -24,7 +25,7 @@ module.exports = function (eleventyConfig) {
   });
 
   return {
-    pathPrefix: "/IDOD/",
+    pathPrefix: "/",
     dir: {
       input: "src",
       output: "_site",
