@@ -1,0 +1,13 @@
+---
+layout: base.njk
+---
+<article aria-labelledby="post-title">
+  <h1 id="post-title">{{ title }}</h1>
+  <p class="meta">
+    <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
+    {% if readTime %} · {{ readTime }} min read{% endif %}
+    {% for tag in tags %}{% if tag != "posts" %} · <span class="tag">{{ tag }}</span>{% endif %}{% endfor %}
+  </p>
+
+  {{ content | safe }}
+</article>

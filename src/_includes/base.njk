@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{ description or site.description }}" />
+    <title>{% if title %}{{ site.title }} | {{ title }}{% else %}{{ site.title }}{% endif %}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | url }}" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+      <div class="container">
+        <a class="logo" href="{{ '/' | url }}" aria-label="{{ site.title }} home">{{ site.title }}</a>
+        <nav aria-label="Primary navigation">
+          <ul class="nav-list">
+            <li>
+              <a href="{{ '/' | url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
+            </li>
+            <li>
+              <a href="{{ '/resources/' | url }}"{% if page.url == '/resources/' %} aria-current="page"{% endif %}>Tools &amp; Resources</a>
+            </li>
+            <li>
+              <a href="{{ '/blog/' | url }}"{% if page.url == '/blog/' or page.url.startsWith('/posts/') %} aria-current="page"{% endif %}>Blog</a>
+            </li>
+            <li>
+              <a href="{{ '/contact/' | url }}"{% if page.url == '/contact/' %} aria-current="page"{% endif %}>Contact &amp; Submissions</a>
+            </li>
+          </ul>
+        </nav>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode">
+          <span aria-hidden="true" id="theme-icon">&#9790;</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content" class="container">
+      {{ content | safe }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>{{ site.title }} (IDOD) · Fast, privacy-first support for digital rights defense.</p>
+      </div>
+    </footer>
+    <script>
+      (function () {
+        var html = document.documentElement;
+        var btn  = document.getElementById('theme-toggle');
+        var icon = document.getElementById('theme-icon');
+        var SUN  = '\u2600';
+        var MOON = '\u263E';
+
+        function applyTheme(theme) {
+          html.dataset.theme = theme;
+          localStorage.setItem('IDOD-theme', theme);
+          icon.textContent = theme === 'dark' ? SUN : MOON;
+          btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+
+        // Restore saved preference or detect system setting
+        var saved = localStorage.getItem('IDOD-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var initial = saved || (prefersDark ? 'dark' : 'light');
+        applyTheme(initial);
+
+        btn.addEventListener('click', function () {
+          applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      })();
+    </script>
+  </body>
+</html>
